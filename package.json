@@ -24,6 +24,7 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
+    "build": "yarn build:compile && yarn build:types",
     "build:compile": "npx babel src --extensions .ts --out-dir build --source-maps",
     "build:types": "tsc",
     "lint": "eslint --ignore-path .eslintignore \"src/**/*.ts\" --fix",
