@@ -1,14 +1,20 @@
 #!/usr/bin/env ts-node
 
+import 'module-alias/register'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import http from 'http'
 import App from '..'
 
-// controllers
+import Variable from '@/env/variable.env'
+import logger from '@/utils/logger.util'
 
-const { app } = new App([])
+// controllers
+import AuthController from '@/controllers/auth.controller'
+import UserController from '@/controllers/user.controller'
+
+const { app } = new App([new AuthController(), new UserController()])
 
 /**
  * Normalize a port into a number, string, or false.
@@ -29,7 +35,7 @@ const normalizePort = (val: any) => {
   return false
 }
 
-const port = normalizePort('3030')
+const port = normalizePort(Variable.PORT || '3030')
 app.set('port', port)
 
 /**
@@ -50,11 +56,11 @@ const onError = (error: any) => {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`)
+      logger.error(`${bind} requires elevated privileges`)
       process.exit(1)
       break
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`)
+      logger.error(`${bind} is already in use`)
       process.exit(1)
       break
     default:
@@ -68,7 +74,7 @@ const onError = (error: any) => {
 const onListening = () => {
   const addr = server.address()
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
-  console.info(`Listening on ${bind}`)
+  logger.info(`Listening on ${bind}`)
 }
 
 server.listen(port)
