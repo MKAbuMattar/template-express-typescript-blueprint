@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
-import HttpException from '../utils/exceptions/http.exception'
+import HttpException from '@/utils/exceptions/http.exception'
+
 // http constant
-import ConstantHttpCode from '../constants/http.code.constant'
-import ConstantHttpReason from '../constants/http.reason.constant'
+import ConstantHttpCode from '@/constants/http.code.constant'
+import ConstantHttpReason from '@/constants/http.reason.constant'
+
 // message constant
-import ConstantMessage from '../constants/message.constant'
+import ConstantMessage from '@/constants/message.constant'
 
 const errorMiddleware = (
   error: HttpException,
@@ -18,6 +20,7 @@ const errorMiddleware = (
     const statusMsg =
       error.statusMsg || ConstantHttpReason.INTERNAL_SERVER_ERROR
     const msg = error.msg || ConstantMessage.SOMETHING_WENT_WRONG
+
     return res.status(statusCode).send({
       status: {
         code: statusCode,
@@ -29,4 +32,5 @@ const errorMiddleware = (
     return next(err)
   }
 }
+
 export default errorMiddleware
